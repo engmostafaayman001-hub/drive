@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model BatchResult {
+  id          String   @id @default(cuid())
+  englishName String
+  arabicName  String
+  store       String
+  price       Decimal  @db.Decimal(10, 2)
+  directLink  String
+  status      ResultStatus
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum ResultStatus {
+  VERIFIED
+  PENDING
+  FAILED
+}
