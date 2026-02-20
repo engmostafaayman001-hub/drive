@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum SearchStatus {
+  VERIFIED
+  PENDING
+  FAILED
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  createdAt    DateTime @default(now())
+}
+
+model BatchResult {
+  id          String       @id @default(uuid())
+  englishName String
+  arabicName  String
+  store       String
+  price       Decimal      @db.Decimal(10, 2)
+  directLink  String
+  status      SearchStatus
+  createdAt   DateTime     @default(now())
+
+  @@index([englishName])
+  @@index([arabicName])
+  @@index([store])
+}
